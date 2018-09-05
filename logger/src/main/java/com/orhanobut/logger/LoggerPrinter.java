@@ -28,7 +28,7 @@ import static com.orhanobut.logger.Logger.VERBOSE;
 import static com.orhanobut.logger.Logger.WARN;
 import static com.orhanobut.logger.Utils.checkNotNull;
 
-class LoggerPrinter implements Printer {
+public class LoggerPrinter implements Printer {
 
   /**
    * It is used for json pretty print
@@ -151,6 +151,11 @@ class LoggerPrinter implements Printer {
 
   @Override public void addAdapter(@NonNull LogAdapter adapter) {
     logAdapters.add(checkNotNull(adapter));
+  }
+
+  public LoggerPrinter withAdapter(@NonNull LogAdapter adapter) {
+    logAdapters.add(checkNotNull(adapter));
+    return this;
   }
 
   /**

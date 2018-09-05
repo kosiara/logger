@@ -18,9 +18,9 @@ import static com.orhanobut.logger.Logger.WARN;
 /**
  * Provides convenient methods to some common operations
  */
-final class Utils {
+public class Utils {
 
-  private Utils() {
+  public Utils() {
     // Hidden constructor.
   }
 
