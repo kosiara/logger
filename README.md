@@ -3,6 +3,49 @@
 
 <img align="right" src='https://github.com/orhanobut/logger/blob/master/art/logger-logo.png' width='128' height='128'/>
 
+### CHANGES IN THIS FORK
+
+Fix for mixed up logging:  https://github.com/orhanobut/logger/issues/191
+
+Added separate formatting for info/error: https://github.com/orhanobut/logger/issues/212
+
+### USAGE 
+
+```
+/**
+ * Log interface implementation
+ */
+object LogImpl {
+
+    private const val TAG_NAME = "MY_CUSTOM_LOG"
+    private const val NO_OF_STACKTRACE_LINES_TO_SHOW = 4
+    private const val INTERNAL_METHOD_FILTER_OFFSET = 4
+
+    private lateinit var errorLogger: LoggerPrinter
+    private lateinit var infoLogger: LoggerPrinter
+
+    fun init() {
+        errorLogger = createLogger(true)
+        infoLogger = createLogger(false)
+    }
+
+    fun e(msg: String) = errorLogger.e(msg)
+    fun w(msg: String) = errorLogger.w(msg)
+    fun i(msg: String) = infoLogger.i(msg)
+    fun d(msg: String) = infoLogger.d(msg)
+
+    private fun createLogger(showStackTrace: Boolean): LoggerPrinter {
+        return LoggerPrinter().withAdapter(AndroidLogAdapter(PrettyFormatStrategy.newBuilder()
+            .showThreadInfo(showStackTrace)
+            .logStrategy(PrettyLogcatLogStrategy())
+            .methodCount(if (showStackTrace) NO_OF_STACKTRACE_LINES_TO_SHOW else 0)
+            .methodOffset(if (showStackTrace) INTERNAL_METHOD_FILTER_OFFSET else 0)
+            .tag(TAG_NAME)
+            .build()))
+    }
+}
+```
+
 ### Logger
 Simple, pretty and powerful logger for android
 
